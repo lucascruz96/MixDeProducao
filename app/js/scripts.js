@@ -135,8 +135,7 @@ function segundoPasso() {
 function httpPost(dados) {
     xmlhttp = new XMLHttpRequest();
 
-    //var link = "http://otimizador.azurewebsites.net/solver";
-    var link = "http://localhost:8080/solver";
+    var link = "http://otimizador.azurewebsites.net/solver";
 
     xmlhttp.open("POST", link, true);
     xmlhttp.setRequestHeader("Content-Type", "application/json");
