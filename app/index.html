@@ -40,14 +40,17 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#">Mix de Produção</a>
+            <a class="pull-right white" href="https://github.com/lucascruz96/mixdeproducao">
+                <i class="fa fa-github fa-2x"></i>
+            </a>
         </div>
     </nav>
 
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center margin-top">
-                <h1 class="mt-5">O problema do mix de produção</h1>
-                <p class="lead">Preencha as informações para solução do problema</p>
+                <h1 class="mt-5">O problema do Mix de Produção</h1>
+                <p id="infos" class="lead">Preencha as informações para solucionar o problema</p>
                 <h4>
                     <p class="escondida" id="nomeProblema"></p>
                 </h4>
@@ -71,7 +74,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-12 text-center">
+                <div class="col-lg-12 text-center margin-top">
                     <button class="btn btn-primary" type="button" onclick="segundoPasso()">Próximo</button>
                 </div>
             </div>
@@ -98,7 +101,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-12 text-center">
+                <div id="divNovoProblema" class="col-lg-12 text-center escondida">
                     <a class="btn btn-primary margin-top" href="http://mixdeproducao.azurewebsites.net/">Novo Problema</a>
                 </div>
             </div>

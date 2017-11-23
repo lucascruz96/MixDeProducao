@@ -135,7 +135,8 @@ function segundoPasso() {
 function httpPost(dados) {
     xmlhttp = new XMLHttpRequest();
 
-    var link = "http://otimizador.azurewebsites.net/solver";
+    //var link = "http://otimizador.azurewebsites.net/solver";
+    var link = "http://localhost:8080/solver";
 
     xmlhttp.open("POST", link, true);
     xmlhttp.setRequestHeader("Content-Type", "application/json");
@@ -145,6 +146,7 @@ function httpPost(dados) {
 
 function resolver() {
     esconder("divPasso2");
+    esconder("infos");
     exibir("divPasso3");
 
     problema.nome = pegarValor("inputProblema");
@@ -158,6 +160,7 @@ function resolver() {
 function resultadoProblema(){
     if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
         esconder("carregamento");
+        exibir("divNovoProblema");
         inserirHTML("divSolucao", xmlhttp.responseText);
     }
 }
