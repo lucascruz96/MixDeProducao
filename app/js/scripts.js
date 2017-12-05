@@ -20,15 +20,17 @@ function pegarValor(idElemento) {
 function montarCabecalhoTabela(qtColunas) {
     var cabecalho = "<thead>";
 
-    cabecalho += "<th>INGREDIENTES/PRODUTOS</th>";
+    cabecalho += "<th>INGREDIENTES / PRODUTOS</th>";
 
     for (var j = 1; j <= qtColunas; j++) {
         cabecalho += "<th>";
-        cabecalho += "<input id=\"nomeProd-" + j + "\" class=\"form-control\" type=\"text\" placeholder=\"Produto " + j + "\">";
+        cabecalho += "<input id=\"nomeProd-" + j + "\" class=\"form-control\" type=\"text\" ";
+        cabecalho += "oninput=\"inserirHTML('tdprod-" + j + "', this.value)\" placeholder=\"Produto " + j + "\">";
         cabecalho += "</th>";
     }
 
-    cabecalho += "<th>TOTAL DISPONIVEL</th>";
+    cabecalho += "<th></th>";
+    cabecalho += "<th>TOTAL DISPONIVEL / GASTO MINIMO</th>";
 
     cabecalho += "</thead>";
 
@@ -68,14 +70,37 @@ function montarCorpoTabela(qtLinhas, qtColunas) {
         }
 
         corpo += "<td>";
-        corpo += "<input id=\"tot-" + i + "\" class=\"form-control\" type=\"number\" placeholder=\"Disponibilidade\" min=\"0\">";
+        corpo += "<select id=\"lBound-" + i + "\"><option value=\"menorIgual\"><=</option>";
+        corpo += "<option value=\"igual\">=</option><option value=\"maiorIgual\">>=</option></select>";
+        corpo += " </td>";
+        corpo += "<td>";
+        corpo += "<input id=\"tot-" + i + "\" class=\"form-control\" type=\"number\" placeholder=\"Disponivel / Minimo\" min=\"0\">";
         corpo += " </td>";
 
         corpo += "</tr>";
     }
+
+    corpo += montarRestricoesProdutos(qtColunas);
+
     corpo += "</tbody>";
 
     return corpo;
+}
+
+function montarRestricoesProdutos(qtProdutos) {
+    var linhas = "<th>Restrições de Produtos</th>";
+
+    for (var i = 1; i <= qtProdutos; i++) {
+        linhas += "<tr><td id=\"tdprod-" + i + "\">Produto " + i + "</td>";
+        linhas += "<td><select id=\"cBound-" + i + "\">";
+        linhas += "<option value=\"maiorIgual\">>=</option>";
+        linhas += "<option value=\"igual\">=</option>";
+        linhas += "<option value=\"menorIgual\"><=</option></td>";
+        linhas += "<td><input id=\"cBoundValue-" + i + "\" value=\"0\" type=\"number\" min=\"0\" class=\"form-control\">";
+        linhas += "</td></tr>"
+    }
+
+    return linhas;
 }
 
 function montarTabela(qtLinhas, qtColunas) {
@@ -96,6 +121,7 @@ function montarIngredientes(qtIngredientes, produtoAtual) {
         ingrediente = {};
         ingrediente.nome = pegarValor("nomeIng-" + i);
         ingrediente.gasto = parseFloat(pegarValor("val-" + i + "-" + produtoAtual));
+        ingrediente.tipoRestricao = pegarValor("lBound-" + i);
         ingrediente.disponibilidade = parseFloat(pegarValor("tot-" + i));
 
         ingredientes.push(ingrediente);
@@ -112,6 +138,8 @@ function montarProdutos(qtProdutos) {
         produto = {};
         produto.nome = pegarValor("nomeProd-" + p);
         produto.lucro = parseFloat(pegarValor("luc-" + p));
+        produto.tipoRestricao = pegarValor("cBound-" + p);
+        produto.valorRestricao = pegarValor("cBoundValue-" + p);
         produto.ingredientes = montarIngredientes(pegarValor("inputIngredientes"), p);
 
         produtos.push(produto);
@@ -135,7 +163,8 @@ function segundoPasso() {
 function httpPost(dados) {
     xmlhttp = new XMLHttpRequest();
 
-    var link = "http://otimizador.azurewebsites.net/solver";
+    //var link = "http://otimizador.azurewebsites.net/solver";
+    var link = "http://localhost:8080/solver";
 
     xmlhttp.open("POST", link, true);
     xmlhttp.setRequestHeader("Content-Type", "application/json");
@@ -149,15 +178,15 @@ function resolver() {
     exibir("divPasso3");
 
     problema.nome = pegarValor("inputProblema");
-    problema.objetivo = "maximizar";
+    problema.objetivo = pegarValor("selectObjetivo");
     problema.produtos = montarProdutos(pegarValor("inputProdutos"));
 
     console.log(JSON.stringify(problema));
     httpPost(JSON.stringify(problema));
 }
 
-function resultadoProblema(){
-    if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+function resultadoProblema() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
         esconder("carregamento");
         exibir("divNovoProblema");
         inserirHTML("divSolucao", xmlhttp.responseText);
