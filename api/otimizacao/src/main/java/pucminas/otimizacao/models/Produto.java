@@ -5,13 +5,17 @@ import java.util.List;
 
 public class Produto {
 	private String nome;
-	private Double lucro;
+	private double lucro;
+	private String tipoRestricao;
+	private int valorRestricao;
 	private List<Ingrediente> ingredientes;
 	
 	public Produto() {
-		ingredientes = new ArrayList<Ingrediente>();
 		nome = "";
 		lucro = 0.0;
+		tipoRestricao = "";
+		valorRestricao = 0;
+		ingredientes = new ArrayList<Ingrediente>();
 	}
 	
 	public String getNome() {
@@ -22,12 +26,28 @@ public class Produto {
 		this.nome = nome;
 	}
 
-	public Double getLucro() {
+	public double getLucro() {
 		return lucro;
 	}
 
-	public void setLucro(Double lucro) {
+	public void setLucro(double lucro) {
 		this.lucro = lucro;
+	}
+	
+	public String getTipoRestricao() {
+		return tipoRestricao;
+	}
+
+	public void setTipoRestricao(String tipoRestricao) {
+		this.tipoRestricao = tipoRestricao;
+	}
+
+	public int getValorRestricao() {
+		return valorRestricao;
+	}
+
+	public void setValorRestricao(int valorRestricao) {
+		this.valorRestricao = valorRestricao;
 	}
 
 	public List<Ingrediente> getIngredientes() {

@@ -48,8 +48,16 @@ public class Solver {
 		// Variaveis
 		for (int j = 0; j < problema.getProdutos().size(); j++) {
 			GLPK.glp_set_col_name(lp, (j + 1), problema.getProdutos().get(j).getNome());
-			GLPK.glp_set_col_kind(lp, (j + 1), GLPKConstants.GLP_IV);
-			GLPK.glp_set_col_bnds(lp, (j + 1), GLPKConstants.GLP_LO, 0, 0);
+			GLPK.glp_set_col_kind(lp, (j + 1), GLPKConstants.GLP_CV);
+
+			if (problema.getProdutos().get(j).getTipoRestricao().equals("menorIgual")) {
+				GLPK.glp_set_col_bnds(lp, (j + 1), GLPKConstants.GLP_UP, 0,
+						problema.getProdutos().get(j).getValorRestricao());
+			} else {
+
+				GLPK.glp_set_col_bnds(lp, (j + 1), GLPKConstants.GLP_LO,
+						problema.getProdutos().get(j).getValorRestricao(), 0);
+			}
 		}
 
 		GLPK.glp_add_rows(lp, problema.getProdutos().get(0).getIngredientes().size());
@@ -57,16 +65,21 @@ public class Solver {
 		// Restrições
 		for (int i = 0; i < problema.getProdutos().get(0).getIngredientes().size(); i++) {
 			GLPK.glp_set_row_name(lp, (i + 1), problema.getProdutos().get(0).getIngredientes().get(i).getNome());
-			
-			GLPK.glp_set_row_bnds(lp, (i + 1), GLPKConstants.GLP_DB, 0,
-					problema.getProdutos().get(0).getIngredientes().get(i).getDisponibilidade());
+
+			if (problema.getProdutos().get(0).getIngredientes().get(i).getTipoRestricao().equals("maiorIgual")) {
+				GLPK.glp_set_row_bnds(lp, (i + 1), GLPKConstants.GLP_LO,
+						problema.getProdutos().get(0).getIngredientes().get(i).getDisponibilidade(), 0);
+			} else {
+				GLPK.glp_set_row_bnds(lp, (i + 1), GLPKConstants.GLP_UP, 0,
+						problema.getProdutos().get(0).getIngredientes().get(i).getDisponibilidade());
+			}
 
 			indices = GLPK.new_intArray(problema.getProdutos().size() + 1);
 			valores = GLPK.new_doubleArray(problema.getProdutos().size() + 1);
 
 			for (int j = 0; j < problema.getProdutos().size(); j++) {
 				GLPK.intArray_setitem(indices, (j + 1), (j + 1));
-				
+
 				GLPK.doubleArray_setitem(valores, (j + 1),
 						problema.getProdutos().get(j).getIngredientes().get(i).getGasto());
 			}
@@ -75,8 +88,13 @@ public class Solver {
 		}
 
 		// Definir objetivos
-		GLPK.glp_set_obj_name(lp, "lucro");
-		GLPK.glp_set_obj_dir(lp, GLPKConstants.GLP_MAX);
+		if (problema.getObjetivo().equals("maximizar")) {
+			GLPK.glp_set_obj_name(lp, "lucro");
+			GLPK.glp_set_obj_dir(lp, GLPKConstants.GLP_MAX);
+		} else {
+			GLPK.glp_set_obj_name(lp, "custo");
+			GLPK.glp_set_obj_dir(lp, GLPKConstants.GLP_MIN);
+		}
 
 		for (int j = 0; j < problema.getProdutos().size(); j++) {
 			GLPK.glp_set_obj_coef(lp, (j + 1), problema.getProdutos().get(j).getLucro());
