@@ -39,11 +39,19 @@ function montarCabecalhoTabela(qtColunas) {
 
 function montarLinhaLucro(qtColunas) {
     var linha = "<tr>";
-    linha += "<th>LUCRO POR PRODUTO EM REAIS</th>";
+
+    var objetivo;
+
+    if (pegarValor("selectObjetivo") == "maximizar")
+        objetivo = "Lucro";
+    else
+        objetivo = "Custo";
+
+    linha += "<th>" + objetivo.toUpperCase() + " POR PRODUTO EM REAIS</th>";
 
     for (var j = 1; j <= qtColunas; j++) {
         linha += "<td>";
-        linha += "<input id=\"luc-" + j + "\" class=\"form-control\" type=\"number\" placeholder=\"Lucro " + j + "\">";
+        linha += "<input id=\"luc-" + j + "\" class=\"form-control\" type=\"number\" placeholder=\"" + objetivo + " " + j + "\">";
         linha += "</td>";
     }
 
@@ -163,8 +171,7 @@ function segundoPasso() {
 function httpPost(dados) {
     xmlhttp = new XMLHttpRequest();
 
-    //var link = "http://otimizador.azurewebsites.net/solver";
-    var link = "http://localhost:8080/solver";
+    var link = "http://otimizador.azurewebsites.net/solver";
 
     xmlhttp.open("POST", link, true);
     xmlhttp.setRequestHeader("Content-Type", "application/json");

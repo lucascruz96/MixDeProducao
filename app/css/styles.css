@@ -9,3 +9,12 @@
 .white{
     color: #ffffff;
 }
+
+.rodape{
+    position: absolute;
+	bottom: 0;
+}
+
+.margin-bottom{
+    margin-bottom: 10px;
+}
