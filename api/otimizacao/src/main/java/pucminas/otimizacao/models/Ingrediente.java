@@ -3,8 +3,8 @@ package pucminas.otimizacao.models;
 public class Ingrediente {
 	private String nome;
 	private double gasto;
+	private String tipoRestricao;
 	private double disponibilidade;
-	
 	
 	public Ingrediente() {
 		nome = "";
@@ -22,6 +22,14 @@ public class Ingrediente {
 	
 	public void setGasto(double gasto) {
 		this.gasto = gasto;
+	}
+	
+	public String getTipoRestricao() {
+		return tipoRestricao;
+	}
+	
+	public void setTipoRestricao(String tipoRestricao) {
+		this.tipoRestricao = tipoRestricao;
 	}
 	
 	public double getDisponibilidade() {
