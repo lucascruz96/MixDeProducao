@@ -18,14 +18,6 @@ A segunda é uma página web implementada em HTML, CSS, Bootstrap, e JavaScript 
 
 - Versão do Spring Boot: 1.5.8
 
-### Limitações
-
-- Não é permitido adicionar restrição de quantidade de produtos, por exemplo, produção minima ou máxima de x produtos A.
-
-- O sistema trabalha apenas com maximização de lucro.
-
-- As restrições dos ingredientes são sempre a sua disponibilidade, por exemplo, seu gasto sempre deve ser menor ou igual a sua disponibilidade.
-
 
 ### Alunos
 
