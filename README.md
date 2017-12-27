@@ -1,8 +1,6 @@
 # MixDeProducao
 Projeto desenvolvido para a disciplina Otimização de Sistemas Computacionais.
 
-[Acessar aplicação](http://mixdeproducao.azurewebsites.net/)
-
 ## Estrutura do projeto
 
 O projeto é divido em duas partes. 
